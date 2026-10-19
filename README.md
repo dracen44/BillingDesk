@@ -73,3 +73,13 @@ Detailed prerequisites, database initialization, and configuration instructions 
 ## Purpose
 
 This project was developed as a professional portfolio demonstration of C#/.NET application development, SQL Server integration, enterprise business logic, and software testing.
+
+## Application Screenshots
+
+### Dashboard
+
+![BillingDesk Dashboard](Screenshots/dashboard.png)
+
+Financial overview showing outstanding balances,
+open and overdue invoices, recent invoices,
+and payment activity.
