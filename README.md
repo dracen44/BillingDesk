@@ -83,3 +83,12 @@ This project was developed as a professional portfolio demonstration of C#/.NET 
 Financial overview showing outstanding balances,
 open and overdue invoices, recent invoices,
 and payment activity.
+
+### Customer Management
+
+![BillingDesk Customers](Screenshots/customers.png)
+
+Customer management with searchable records, SQL-side
+pagination, account status, and financial summaries
+including total billed, payments received, and
+outstanding balances.
