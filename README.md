@@ -92,3 +92,9 @@ Customer management with searchable records, SQL-side
 pagination, account status, and financial summaries
 including total billed, payments received, and
 outstanding balances.
+
+### Invoice Management
+
+![BillingDesk Invoices](Screenshots/invoices.png)
+
+Invoice tracking with customer information, invoice and due dates, payment totals, outstanding balances, status filtering, and server-side pagination across a large SQL Server dataset.
