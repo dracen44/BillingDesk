@@ -98,3 +98,9 @@ outstanding balances.
 ![BillingDesk Invoices](Screenshots/invoices.png)
 
 Invoice tracking with customer information, invoice and due dates, payment totals, outstanding balances, status filtering, and server-side pagination across a large SQL Server dataset.
+
+### Payment Management
+
+![BillingDesk Payments](Screenshots/payments.png)
+
+Payment tracking with invoice associations, customer information, date-range filtering, searchable records, remaining-balance calculations, and server-side pagination.
