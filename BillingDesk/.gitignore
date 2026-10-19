@@ -1,0 +1,41 @@
+## User secrets
+*/Wwwroot.secrets.json
+UserSecretsId
+*/Properties/secrets.json
+*/secrets.json
+
+## Application user secrets
+appsettings.*.local.json
+
+## IDE
+.vs/
+.vscode/
+*.sln.iml
+*.user
+
+## Build results
+bin/
+obj/
+*.dll
+*.exe
+
+## Debug
+*.pdb
+
+## NuGet
+.nuget/
+
+## Visual Studio
+.visualstudio/
+*.suo
+*.sln.docstates
+
+## OS
+.DS_Store
+*.swp
+*.swo
+Thumbs.db
+
+## Local configuration
+appsettings.local.json
+appsettings.*.local.json

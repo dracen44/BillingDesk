@@ -1,0 +1,162 @@
+<UserControl x:Class="BillingDesk.Views.DashboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:BillingDesk.Converters"
+             Background="{StaticResource BackgroundBrush}">
+    <UserControl.Resources>
+        <local:BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        <local:StringToVisibilityConverter x:Key="StringToVis"/>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Loading Overlay -->
+        <StackPanel Grid.Row="0" Grid.RowSpan="4" Background="Transparent" 
+                    Visibility="{Binding IsLoading, Converter={StaticResource BoolToVis}}"
+                    Panel.ZIndex="100" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock Text="Loading Dashboard..." Style="{StaticResource LoadingStyle}" 
+                       Foreground="{StaticResource AccentBrush}"/>
+        </StackPanel>
+
+        <!-- Error Message -->
+        <Border Grid.Row="0" Background="#FFEBEE" BorderBrush="#EF5350" BorderThickness="0,0,0,2"
+                Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVis}}"
+                Padding="20,12,20,12" Margin="0,0,0,10">
+            <TextBlock Text="{Binding ErrorMessage}" Foreground="#C62828" TextWrapping="Wrap"/>
+        </Border>
+
+        <!-- Title -->
+        <StackPanel Grid.Row="0" Margin="20,16,20,8" Orientation="Vertical">
+            <TextBlock Text="Dashboard" FontSize="28" FontWeight="Bold" 
+                       Foreground="{StaticResource TextBrush}" Margin="0,0,0,4"/>
+            <TextBlock Text="Real-time billing overview" FontSize="13" 
+                       Foreground="#999" Margin="0"/>
+        </StackPanel>
+
+        <!-- Metric Cards Row -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Disabled" 
+                      HorizontalScrollBarVisibility="Auto" Margin="20,8,20,20">
+            <StackPanel Orientation="Horizontal">
+                <!-- Total Outstanding Card -->
+                <Border Style="{StaticResource MetricCardStyle}" MinWidth="200" MaxWidth="240" Margin="0,0,16,0">
+                    <StackPanel Margin="16,14,16,14">
+                        <TextBlock Text="Total Outstanding" FontSize="12" Foreground="#999" 
+                                   FontWeight="Medium" Margin="0,0,0,8"/>
+                        <TextBlock Text="{Binding TotalOutstandingBalance, StringFormat={}{0:C0}}" 
+                                   FontSize="26" FontWeight="Bold" Foreground="{StaticResource PrimaryBrush}"
+                                   TextAlignment="Right" Margin="0,0,0,4"/>
+                        <TextBlock Text="Amount due from customers" FontSize="11" Foreground="#CCC"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Open Invoices Card -->
+                <Border Style="{StaticResource MetricCardStyle}" MinWidth="200" MaxWidth="240" Margin="0,0,16,0">
+                    <StackPanel Margin="16,14,16,14">
+                        <TextBlock Text="Open Invoices" FontSize="12" Foreground="#999" 
+                                   FontWeight="Medium" Margin="0,0,0,8"/>
+                        <TextBlock Text="{Binding OpenInvoiceCount, StringFormat={}{0:N0}}" 
+                                   FontSize="26" FontWeight="Bold" Foreground="{StaticResource AccentBrush}"
+                                   TextAlignment="Right" Margin="0,0,0,4"/>
+                        <TextBlock Text="Awaiting payment" FontSize="11" Foreground="#CCC"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Overdue Invoices Card -->
+                <Border Style="{StaticResource MetricCardStyle}" MinWidth="200" MaxWidth="240" Margin="0,0,16,0">
+                    <StackPanel Margin="16,14,16,14">
+                        <TextBlock Text="Overdue Invoices" FontSize="12" Foreground="#999" 
+                                   FontWeight="Medium" Margin="0,0,0,8"/>
+                        <TextBlock Text="{Binding OverdueInvoiceCount, StringFormat={}{0:N0}}" 
+                                   FontSize="26" FontWeight="Bold" Foreground="#E57373"
+                                   TextAlignment="Right" Margin="0,0,0,4"/>
+                        <TextBlock Text="Past due date" FontSize="11" Foreground="#CCC"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Recent Payments Card -->
+                <Border Style="{StaticResource MetricCardStyle}" MinWidth="200" MaxWidth="240" Margin="0,0,0,0">
+                    <StackPanel Margin="16,14,16,14">
+                        <TextBlock Text="Payments (30 Days)" FontSize="12" Foreground="#999" 
+                                   FontWeight="Medium" Margin="0,0,0,8"/>
+                        <TextBlock Text="{Binding RecentPaymentsTotal, StringFormat={}{0:C0}}" 
+                                   FontSize="26" FontWeight="Bold" Foreground="{StaticResource SuccessBrush}"
+                                   TextAlignment="Right" Margin="0,0,0,4"/>
+                        <TextBlock Text="Recently received" FontSize="11" Foreground="#CCC"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Recent Invoices -->
+        <Grid Grid.Row="2" Margin="20,0,20,12">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Text="Recent Invoices" FontSize="16" FontWeight="SemiBold" 
+                       Foreground="{StaticResource TextBrush}" Margin="0,0,0,10"/>
+
+            <DataGrid Grid.Row="1" ItemsSource="{Binding RecentInvoices}" 
+                      Style="{StaticResource DashboardDataGridStyle}"
+                      ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
+                      RowStyle="{StaticResource DashboardDataGridRowStyle}"
+                      AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False"
+                      CanUserReorderColumns="False" IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Invoice ID" Binding="{Binding InvoiceId}" 
+                                        Width="80" CellStyle="{StaticResource DataGridCellStyle}"/>
+                    <DataGridTextColumn Header="Customer" Binding="{Binding CustomerName}" 
+                                        Width="*" CellStyle="{StaticResource DataGridCellStyle}"/>
+                    <DataGridTextColumn Header="Date" Binding="{Binding InvoiceDate, StringFormat={}{0:M/d/yy}}" 
+                                        Width="85" CellStyle="{StaticResource DataGridCellStyle}"/>
+                    <DataGridTextColumn Header="Due Date" Binding="{Binding DueDate, StringFormat={}{0:M/d/yy}}" 
+                                        Width="85" CellStyle="{StaticResource DataGridCellStyle}"/>
+                    <DataGridTextColumn Header="Total" Binding="{Binding Total, StringFormat={}{0:C0}}" 
+                                        Width="100" CellStyle="{StaticResource CurrencyDataGridCellStyle}"/>
+                    <DataGridTextColumn Header="Paid" Binding="{Binding AmountPaid, StringFormat={}{0:C0}}" 
+                                        Width="100" CellStyle="{StaticResource CurrencyDataGridCellStyle}"/>
+                    <DataGridTextColumn Header="Balance" Binding="{Binding Balance, StringFormat={}{0:C0}}" 
+                                        Width="100" CellStyle="{StaticResource BalanceDataGridCellStyle}"/>
+                    <DataGridTextColumn Header="Status" Binding="{Binding Status}" 
+                                        Width="90" CellStyle="{StaticResource StatusDataGridCellStyle}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+
+        <!-- Recent Payments -->
+        <Grid Grid.Row="3" Margin="20,0,20,20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Text="Recent Payments" FontSize="16" FontWeight="SemiBold" 
+                       Foreground="{StaticResource TextBrush}" Margin="0,0,0,10"/>
+
+            <DataGrid Grid.Row="1" ItemsSource="{Binding RecentPayments}" 
+                      Style="{StaticResource DashboardDataGridStyle}"
+                      ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
+                      RowStyle="{StaticResource DashboardDataGridRowStyle}"
+                      AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False"
+                      CanUserReorderColumns="False" IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Payment ID" Binding="{Binding PaymentId}" 
+                                        Width="90" CellStyle="{StaticResource DataGridCellStyle}"/>
+                    <DataGridTextColumn Header="Customer" Binding="{Binding CustomerName}" 
+                                        Width="*" CellStyle="{StaticResource DataGridCellStyle}"/>
+                    <DataGridTextColumn Header="Date" Binding="{Binding PaymentDate, StringFormat={}{0:M/d/yy}}" 
+                                        Width="85" CellStyle="{StaticResource DataGridCellStyle}"/>
+                    <DataGridTextColumn Header="Amount" Binding="{Binding Amount, StringFormat={}{0:C0}}" 
+                                        Width="120" CellStyle="{StaticResource CurrencyDataGridCellStyle}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </Grid>
+</UserControl>
